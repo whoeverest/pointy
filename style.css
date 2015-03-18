@@ -1,0 +1,45 @@
+body {
+	margin: 0;
+}
+#container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+canvas {
+	border: 1px solid silver;
+}
+#controls {
+	position: absolute;
+	top: 610px;
+	left: 100px;
+}
+.control {
+	float: left;
+	width: 70px;
+	height: 70px;
+	margin-right: 5px;
+	border: 1px solid silver;
+}
+.slots {
+	position: absolute;
+	width: 300px;
+	height: 220px;
+	border: 1px solid silver;
+	padding: 3px;
+}
+.slot {
+	float: left;
+	width: 70px;
+	height: 70px;
+	border: 1px solid silver;
+	margin: 1px;
+}
+#main {
+	top: 0;
+	left: 820px;
+}
+#f1 {
+	top: 240px;
+	left: 820px;
+}

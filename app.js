@@ -1,0 +1,78 @@
+var Point  = Isomer.Point;
+var Path   = Isomer.Path;
+var Shape  = Isomer.Shape;
+var Vector = Isomer.Vector;
+var Color  = Isomer.Color;
+
+var red = new Color(150, 0, 0);
+
+var Pointy = function(origin, dx, dy, dz) {
+    dx = (typeof dx === 'number') ? dx : 1;
+    dy = (typeof dy === 'number') ? dy : 1;
+    dz = (typeof dz === 'number') ? dz : 1;
+
+    var pointy = new Shape();
+
+    var bottom = new Path([
+        origin,
+        new Point(origin.x + dx, origin.y, origin.z),
+        new Point(origin.x + dx / 2, origin.y + dy, origin.z)
+    ]);
+
+    var back = new Path([
+        origin,
+        new Point(origin.x + dx, origin.y, origin.z),
+        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
+    ]);
+
+    var left = new Path([
+        origin,
+        new Point(origin.x + dx / 2, origin.y + dy, origin.z),
+        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
+    ]);
+
+    var right = new Path([
+        new Point(origin.x + dx, origin.y, origin.z),
+        new Point(origin.x + dx / 2, origin.y + dy, origin.z),
+        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
+    ]);
+
+    pointy.push(bottom);
+    pointy.push(back);
+    pointy.push(left);
+    pointy.push(right);
+
+    return pointy;
+};
+
+function constructGridEls(grid) {
+    var elements = [];
+
+    var length = grid.length - 1;
+    var width = grid[0].length - 1;
+    for (var i = length; i >= 0; i--) {
+        for (var j = width; j >= 0; j--) {
+            var height = grid[i][j];
+            elements.push(new Shape.Prism(new Point(i, j, 0)));
+
+            for (var k = 0; k < height; k++) {
+                elements.push(new Shape.Prism(new Point(i, j, k)));
+            }
+        }
+    }
+
+    return elements;
+}
+
+var iso = new Isomer(document.getElementById("canvas"));
+
+var grid = [
+    [1, 2, 1, 2],
+    [2, 1, 2, 1],
+    [1, 2, 2, 3]
+];
+
+var p = new Pointy(Point.ORIGIN.translate(0, 1, 2));
+
+iso.add(constructGridEls(grid));
+iso.add(p.rotateZ(p.ORIGIN, Math.PI / 2), red);
