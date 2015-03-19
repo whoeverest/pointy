@@ -4,7 +4,7 @@ var Shape  = Isomer.Shape;
 var Vector = Isomer.Vector;
 var Color  = Isomer.Color;
 
-var red = new Color(150, 0, 0);
+var red = new Color(150, 0, 30);
 
 var Pointy = function(origin, dx, dy, dz) {
     dx = (typeof dx === 'number') ? dx : 1;
@@ -16,7 +16,7 @@ var Pointy = function(origin, dx, dy, dz) {
     var bottom = new Path([
         origin,
         new Point(origin.x + dx, origin.y, origin.z),
-        new Point(origin.x + dx / 2, origin.y + dy, origin.z)
+        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z)
     ]);
 
     var back = new Path([
@@ -27,13 +27,13 @@ var Pointy = function(origin, dx, dy, dz) {
 
     var left = new Path([
         origin,
-        new Point(origin.x + dx / 2, origin.y + dy, origin.z),
+        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z),
         new Point(origin.x + dx / 2, origin.y, origin.z + dz)
     ]);
 
     var right = new Path([
         new Point(origin.x + dx, origin.y, origin.z),
-        new Point(origin.x + dx / 2, origin.y + dy, origin.z),
+        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z),
         new Point(origin.x + dx / 2, origin.y, origin.z + dz)
     ]);
 
@@ -53,7 +53,6 @@ function constructGridEls(grid) {
     for (var i = length; i >= 0; i--) {
         for (var j = width; j >= 0; j--) {
             var height = grid[i][j];
-            elements.push(new Shape.Prism(new Point(i, j, 0)));
 
             for (var k = 0; k < height; k++) {
                 elements.push(new Shape.Prism(new Point(i, j, k)));
@@ -67,12 +66,25 @@ function constructGridEls(grid) {
 var iso = new Isomer(document.getElementById("canvas"));
 
 var grid = [
-    [1, 2, 1, 2],
-    [2, 1, 2, 1],
-    [1, 2, 2, 3]
+    [0, 0, 1],
+    [0, 1, 2],
+    [1, 2, 3]
 ];
 
-var p = new Pointy(Point.ORIGIN.translate(0, 1, 2));
+var p = new Pointy(Point.ORIGIN.translate(1, 2.25, 2));
 
 iso.add(constructGridEls(grid));
-iso.add(p.rotateZ(p.ORIGIN, Math.PI / 2), red);
+iso.add(p.rotateZ(new Point(1.5, 2.5, 2), Math.PI), red);
+iso.add(new Path([
+    Point(2, 1, 2),
+    Point(3, 1, 2),
+    Point(3, 2, 2),
+    Point(2, 2, 2)
+]), new Color(250, 200, 170));
+
+iso.add(new Path([
+  Point(1, 1, 1),
+  Point(2, 1, 1),
+  Point(2, 2, 1),
+  Point(1, 2, 1)
+]), new Color(10, 10, 10));
