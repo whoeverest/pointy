@@ -11,8 +11,8 @@ var level = {
         { x: 1, y: 2, h: 1, type: 'button', active: false }
     ],
     robot: {
-        x: 1,
-        y: 3,
+        x: 0,
+        y: 0,
         rotation: 0 // 90, 180, 270
     },
     functions: {
@@ -42,7 +42,8 @@ var valid = {
             return cell.x.toString() + cell.y.toString();
         });
 
-        var overlaps = _.size(counts) === _.size(g);
+        // if some key repeats twise, cells overlap
+        var overlaps = _.size(counts) !== _.size(g);
 
         if (!hasButton) {
             throw new Error('Missing button cell');
@@ -51,6 +52,8 @@ var valid = {
         if (overlaps) {
             throw new Error('Overlapping cells');
         }
+
+        _.map(g.cells, valid.cell);
 
         return true;
     },
@@ -85,8 +88,6 @@ var valid = {
         return true;
     },
     robot: function(r) {
-        console.log(r);
-
         // todo: remove hardcoded 8s
         var xOk = _.inRange(r.x, 0, 8);
         var yOk = _.inRange(r.y, 0, 8);
@@ -132,17 +133,51 @@ var valid = {
         return true;
     },
     level: function(l) {
-        // _width, _length, _height and _maxFnLenght, _maxNumFn are integers
-        // all cells are valid
-        // robot is valid
+        if (!_.isNumber(l._width)) throw new Error('"_width" should be a Number');
+        if (!_.isNumber(l._length)) throw new Error('"_length" should be a Number');
+        if (!_.isNumber(l._height)) throw new Error('"_height" should be a Number');
+        if (!_.isNumber(l._maxFnLength)) throw new Error('"_maxFnLength" should be a Number');
+        if (!_.isNumber(l._maxNumFn)) throw new Error('"_maxNumFn" should be a Number');
+
+        // if grid or robot is invalid, these functions will throw
+        // so we're calling them for that side effect
+        valid.grid(l.grid);
+        valid.robot(l.robot);
+
         // robot position can be found in cells
-        // all functions are valid
-        // only existing commands are referenced inside functions
-        // current command is valid
-        // running is true or false
+        var robotPosInCells = _.findWhere(l.grid, { x: l.robot.x, y: l.robot.y });
+
+        if (!robotPosInCells) {
+            throw new Error('Robot coordinates don\'t represent a valid cell');
+        }
+
+        // calling for side effects
+        var fnNames = _.keys(l.functions);
+        _.forEach(l.functions, function(fn) {
+            return valid.fn(fn, fnNames);
+        });
+
+        valid.currentCommand(l.currentCommand, l.functions);
+
+        var runningIsBool = _.isBoolean(l.running);
+
+        if (!runningIsBool) {
+            throw new Error('"running" must be a boolean');
+        }
+
+        return true;
     },
-    currentCommand: function(cc) {
+    currentCommand: function(cc, functions) {
         // name can be found in functions
         // 0 <= position < function.length
+        var fnNames = _.keys(functions);
+
+        valid.command(cc.name, fnNames);
+
+        if (_.includes(fnNames, cc.name)) {
+            if (!_.inRange(cc.position, 0, _.size(functions[cc.name]) + 1)) {
+                throw new Error('Current command position out of range');
+            }
+        }
     }
 };
