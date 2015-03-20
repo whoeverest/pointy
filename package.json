@@ -1,0 +1,28 @@
+{
+  "name": "pointy",
+  "version": "0.0.1",
+  "description": "A LightBot inspired game that teaches you programming.",
+  "main": "bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whoeverest/pointy.git"
+  },
+  "keywords": [
+    "lightbot",
+    "programming",
+    "game"
+  ],
+  "author": "Andrej T.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/whoeverest/turtle-bot/issues"
+  },
+  "homepage": "https://github.com/whoeverest/turtle-bot",
+  "dependencies": {
+    "isomer": "^0.2.4",
+    "lodash": "^3.5.0"
+  }
+}
