@@ -1,8 +1,16 @@
+var Isomer = require('isomer');
+var _ = require('lodash');
+
+var valid = require('./validation.js');
+var levels = require('./levels.js');
+
 var Point  = Isomer.Point;
 var Path   = Isomer.Path;
 var Shape  = Isomer.Shape;
 var Vector = Isomer.Vector;
 var Color  = Isomer.Color;
+
+var level = levels.first;
 
 var red = new Color(150, 0, 30);
 
