@@ -3,6 +3,7 @@ var _ = require('lodash');
 
 var valid = require('./validation.js');
 var levels = require('./levels.js');
+var game = require('./game.js');
 
 var Point  = Isomer.Point;
 var Path   = Isomer.Path;
@@ -11,6 +12,8 @@ var Vector = Isomer.Vector;
 var Color  = Isomer.Color;
 
 var level = levels.first;
+
+console.log(game.walk(level));
 
 var red = new Color(150, 0, 30);
 

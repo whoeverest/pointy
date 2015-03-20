@@ -133,6 +133,8 @@ var valid = {
             throw new Error('"running" must be a boolean');
         }
 
+        // todo: number of functions <= _maxNumFn
+
         return true;
     },
     currentCommand: function(cc, functions) {
