@@ -8,7 +8,7 @@ function _getSrcCell(level) {
     };
 }
 
-function walk(level) {
+function _getTargetCell(level) {
     var srcCell = _getSrcCell(level);
 
     var targetCell = {};
@@ -30,7 +30,18 @@ function walk(level) {
     targetCell.h = _.findWhere(level.grid, { x: targetCell.x, y: targetCell.y }).h;
 
     if (_.isUndefined(targetCell.h)) {
-        return false; // empty cell
+        return null; // cell not found
+    } else {
+        return targetCell;
+    }
+}
+
+function walk(level) {
+    var srcCell = _getSrcCell(level);
+    var targetCell = _getTargetCell(level);
+
+    if (_.isNull(targetCell)) {
+        return false;
     }
 
     if (targetCell.h !== srcCell.h) {
@@ -69,8 +80,46 @@ function rotRight(level) {
     return newLevel;
 }
 
+function jump(level) {
+    var srcCell = _getSrcCell(level);
+    var targetCell = _getTargetCell(level);
+
+    if (_.isNull(targetCell)) {
+        return false;
+    }
+
+    if (targetCell.h !== srcCell.h + 1) {
+        return false; // you can only jump one level
+    }
+
+    var newLevel = _.cloneDeep(level);
+
+    newLevel.robot.x = targetCell.x;
+    newLevel.robot.y = targetCell.y;
+
+    return newLevel;
+}
+
+function press(level) {
+    var srcCell = _getSrcCell(level);
+    var button = _.findWhere(level.grid, { x: srcCell.x, y: srcCell.y, type: 'button' });
+
+    var newLevel = _.cloneDeep(level);
+    var newB = _.findWhere(newLevel.grid, { x: button.x, y: button.y });
+
+    if (button.active) {
+        newB.active = false;
+    } else {
+        newB.active = true;
+    }
+
+    return newLevel;
+}
+
 module.exports = {
     walk: walk,
     rotLeft: rotLeft,
-    rotRight: rotRight
+    rotRight: rotRight,
+    jump: jump,
+    press: press
 };
