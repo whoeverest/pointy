@@ -1,14 +1,15 @@
 var _ = require('lodash');
 
-function walk(level) {
-    // Executes "walk" command
-    // Returns a new level state
-
-    var srcCell = {
+function _getSrcCell(level) {
+    return {
         x: level.robot.x,
         y: level.robot.y,
         h: _.findWhere(level.grid, { x: level.robot.x, y: level.robot.y }).h
     };
+}
+
+function walk(level) {
+    var srcCell = _getSrcCell(level);
 
     var targetCell = {};
 
@@ -36,12 +37,40 @@ function walk(level) {
         return false; // can't go when cells are not at the same height
     }
 
-    level.robot.x = targetCell.x;
-    level.robot.y = targetCell.y;
+    var newLevel = _.cloneDeep(level);
 
-    return level;
+    newLevel.robot.x = targetCell.x;
+    newLevel.robot.y = targetCell.y;
+
+    return newLevel;
+}
+
+function rotLeft(level) {
+    var newLevel = _.cloneDeep(level);
+
+    newLevel.robot.rotation += 90;
+
+    if (newLevel.robot.rotation > 360) {
+        newLevel.robot.rotation = 360 - newLevel.robot.rotation;
+    }
+
+    return newLevel;
+}
+
+function rotRight(level) {
+    var newLevel = _.cloneDeep(level);
+
+    newLevel.robot.rotation -= 90;
+
+    if (newLevel.robot.rotation < 0) {
+        newLevel.robot.rotation = 360 + newLevel.robot.rotation; // has negative value, so plus
+    }
+
+    return newLevel;
 }
 
 module.exports = {
-    walk: walk
+    walk: walk,
+    rotLeft: rotLeft,
+    rotRight: rotRight
 };
