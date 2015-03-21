@@ -1,47 +1,37 @@
 var Isomer = require('isomer');
 var _ = require('lodash');
 
+var helpers = require('./helpers.js');
+
 var Point  = Isomer.Point;
 var Path   = Isomer.Path;
 var Shape  = Isomer.Shape;
 var Vector = Isomer.Vector;
 var Color  = Isomer.Color;
 
-var Pointy = function(origin, dx, dy, dz) {
-    dx = (typeof dx === 'number') ? dx : 1;
-    dy = (typeof dy === 'number') ? dy : 1;
-    dz = (typeof dz === 'number') ? dz : 1;
+var Pointy = function(origin) {
+    // dx = (typeof dx === 'number') ? dx : 1;
+    // dy = (typeof dy === 'number') ? dy : 1;
+    // dz = (typeof dz === 'number') ? dz : 1;
 
     var pointy = new Shape();
 
-    var bottom = new Path([
-        origin,
-        new Point(origin.x + dx, origin.y, origin.z),
-        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z)
-    ]);
+    // points
+    var right = origin;
+    var front = new Point(origin.x + 0.5, origin.y + 0.5, origin.z);
+    var top = new Point(origin.x, origin.y + 0.5, origin.z + 1);
+    var left = new Point(origin.x, origin.y + 1, origin.z);
 
-    var back = new Path([
-        origin,
-        new Point(origin.x + dx, origin.y, origin.z),
-        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
-    ]);
+    // sides (paths, polygons)
+    var bottomSide = new Path([right, front, left]);
+    var backSide   = new Path([right, top, left]);
+    var rightSide  = new Path([right, front, top]);
+    var leftSide   = new Path([front, left, top]);
 
-    var left = new Path([
-        origin,
-        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z),
-        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
-    ]);
-
-    var right = new Path([
-        new Point(origin.x + dx, origin.y, origin.z),
-        new Point(origin.x + dx / 2, origin.y + dy / 2, origin.z),
-        new Point(origin.x + dx / 2, origin.y, origin.z + dz)
-    ]);
-
-    pointy.push(bottom);
-    pointy.push(back);
-    pointy.push(left);
-    pointy.push(right);
+    pointy.push(bottomSide);
+    pointy.push(backSide);
+    pointy.push(rightSide);
+    pointy.push(leftSide);
 
     return pointy;
 };
@@ -57,7 +47,7 @@ var render = {
 
         render.background(ctx);
         render.grid(level.grid, iso);
-        render.pointy(level.robot, iso);
+        render.pointy(level.robot, level.grid, iso);
     },
     background: function(ctx) {
         var gradient = ctx.createRadialGradient(400, 250, 350, 400, 250, 600);
@@ -102,10 +92,29 @@ var render = {
             Point(button.x,     button.y + 1, button.h)
         ]), color);
     },
-    pointy: function(pointy, iso) {
+    pointy: function(pointy, grid, iso) {
         var red = new Color(150, 0, 30);
-        var p = new Pointy(Point.ORIGIN.translate(pointy.x, pointy.y, 1));
-        iso.add(p, red);
+
+        var h = helpers._getHeight(grid, pointy.x, pointy.y);
+        var positioned = new Pointy(Point.ORIGIN.translate(pointy.x, pointy.y, h));
+        var rotPoint = new Point(pointy.x + 0.5, pointy.y + 0.5, 1);
+
+        console.log(h);
+
+        var rotRadians;
+        if (pointy.rotation === 0) {
+            rotRadians = 0;
+        } else if (pointy.rotation === 90) {
+            rotRadians = Math.PI / 2;
+        } else if (pointy.rotation === 180) {
+            rotRadians = Math.PI;
+        } else {
+            rotRadians = 3 * Math.PI / 2;
+        }
+
+        var rotated = positioned.rotateZ(rotPoint, rotRadians);
+
+        iso.add(rotated, red);
     }
 };
 

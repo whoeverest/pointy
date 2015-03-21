@@ -136,7 +136,7 @@ var valid = {
         var cmdSuccess = _.isBoolean(l.cmdSuccess);
 
         if (!cmdSuccess) {
-            throw new Error('"cmdFailed" must be a boolean');
+            throw new Error('"cmdSuccess" must be a boolean');
         }
 
         // todo: number of functions <= _maxNumFn
@@ -151,7 +151,7 @@ var valid = {
         valid.command(cc.fnName, fnNames);
 
         if (_.includes(fnNames, cc.fnName)) {
-            if (!_.inRange(cc.position, 0, _.size(functions[cc.fnName]) + 1)) {
+            if (!_.inRange(cc.position, 0, _.size(functions[cc.fnName].commands) + 1)) {
                 throw new Error('Current command position out of range');
             }
         }

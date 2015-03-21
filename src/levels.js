@@ -32,7 +32,8 @@ var first = {
         fnName: 'main',
         position: 0
     },
-    running: false
+    running: false,
+    cmdSuccess: true
 };
 
 // Call a subroutine
@@ -59,8 +60,8 @@ var second = {
     },
     functions: {
         main: {
-            slots: 3,
-            commands: ['walk', 'walk', 'f1']
+            slots: 4,
+            commands: ['walk', 'walk', 'press', 'f1']
         },
         f1: {
         	slots: 3,
@@ -71,10 +72,56 @@ var second = {
         fnName: 'main',
         position: 0
     },
-    running: false
+    running: false,
+    cmdSuccess: true
+};
+
+var third = {
+    _width: 8,
+    _length: 8,
+    _height: 8,
+    _maxFnLength: 12,
+    _maxNumFn: 2,
+    grid: [
+        { x: 0, y: 0, h: 1, type: 'normal' },
+        { x: 1, y: 0, h: 1, type: 'normal' },
+        { x: 2, y: 0, h: 1, type: 'button', active: false },
+        { x: 2, y: 1, h: 1, type: 'normal' },
+        { x: 2, y: 2, h: 1, type: 'button', active: false },
+        { x: 1, y: 2, h: 2, type: 'normal' },
+        { x: 0, y: 2, h: 1, type: 'button', active: false },
+        { x: 0, y: 1, h: 1, type: 'normal' }
+    ],
+    robot: {
+        x: 0,
+        y: 0,
+
+        // 0 == right
+        // 90 == up
+        // 180 == left
+        // 270 == down
+        rotation: 0
+    },
+    functions: {
+        main: {
+            slots: 12,
+            commands: ['jump', 'walk', 'jump', 'walk', 'press', 'rotLeft', 'main']
+        },
+        f1: {
+        	slots: 12,
+        	commands: []
+        }
+    },
+    currentCommand: {
+        fnName: 'main',
+        position: 0
+    },
+    running: false,
+    cmdSuccess: true
 };
 
 module.exports = {
 	first: first,
-	second: second
+	second: second,
+	third: third
 };

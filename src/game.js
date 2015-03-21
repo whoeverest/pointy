@@ -1,50 +1,13 @@
 var _ = require('lodash');
+var helpers = require('./helpers.js');
 
-function _getSrcCell(level) {
-    return {
-        x: level.robot.x,
-        y: level.robot.y,
-        h: _.findWhere(level.grid, { x: level.robot.x, y: level.robot.y }).h
-    };
-}
-
-function _getTargetCell(level) {
-    var srcCell = _getSrcCell(level);
-
-    var targetCell = {};
-
-    if (level.robot.rotation === 0) {
-        targetCell.x = srcCell.x + 1;
-        targetCell.y = srcCell.y;
-    } else if (level.robot.rotation === 90) {
-        targetCell.x = srcCell.x;
-        targetCell.y = srcCell.y + 1;
-    } else if (level.robot.rotation === 180) {
-        targetCell.x = srcCell.x - 1;
-        targetCell.y = srcCell.y;
-    } else {
-        targetCell.x = srcCell.x;
-        targetCell.y = srcCell.y - 1;
-    }
-
-    var schrodinCell;
-    schrodinCell = _.findWhere(level.grid, { x: targetCell.x, y: targetCell.y });
-
-    if (_.isUndefined(schrodinCell)) {
-        return null; // cell not found
-    } else {
-        targetCell.h = schrodinCell.h;
-        return targetCell;
-    }
-}
-
-function _cmdSuccess(level) {
+function _cmdSuccess (level) {
     var newLevel = _.cloneDeep(level);
     newLevel.cmdSuccess = true;
     return newLevel;
 }
 
-function _cmdFail(level) {
+function _cmdFail (level) {
     var newLevel = _.cloneDeep(level);
     newLevel.cmdSuccess = false;
     return newLevel;
@@ -52,8 +15,8 @@ function _cmdFail(level) {
 
 var commands = {
     walk: function walk(level) {
-        var srcCell = _getSrcCell(level);
-        var targetCell = _getTargetCell(level);
+        var srcCell = helpers._getSrcCell(level);
+        var targetCell = helpers._getTargetCell(level);
 
         if (_.isNull(targetCell)) {
             return _cmdFail(level);
@@ -93,18 +56,17 @@ var commands = {
         return _cmdSuccess(newLevel);
     },
     jump: function jump(level) {
-        var srcCell = _getSrcCell(level);
-        var targetCell = _getTargetCell(level);
+        var srcCell = helpers._getSrcCell(level);
+        var targetCell = helpers._getTargetCell(level);
 
         if (_.isNull(targetCell)) {
             return _cmdFail(level);
         }
 
-        if (targetCell.h !== srcCell.h + 1) {
-            return _cmdFail(level); // you can only jump one level
+        // you can only jump one level
+        if (targetCell.h !== srcCell.h + 1 && targetCell.h !== srcCell.h - 1) {
+            return _cmdFail(level); 
         }
-
-        // todo: jump one (or more) levels down
 
         var newLevel = _.cloneDeep(level);
 
@@ -114,8 +76,12 @@ var commands = {
         return _cmdSuccess(newLevel);
     },
     press: function press(level) {
-        var srcCell = _getSrcCell(level);
+        var srcCell = helpers._getSrcCell(level);
         var button = _.findWhere(level.grid, { x: srcCell.x, y: srcCell.y, type: 'button' });
+
+        if (!button) {
+            return _cmdFail(level);
+        }
 
         var newLevel = _.cloneDeep(level);
         var newB = _.findWhere(newLevel.grid, { x: button.x, y: button.y });

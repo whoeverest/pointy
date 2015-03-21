@@ -6,7 +6,7 @@ var levels = require('./levels.js');
 var game = require('./game.js');
 var render = require('./render.js');
 
-var state = levels.second;
+var state = levels.third;
 render.level(state, document.getElementById("canvas"));
 
 setInterval(function() {
@@ -14,5 +14,5 @@ setInterval(function() {
     render.level(state, document.getElementById("canvas"));
     valid.level(state);
 
-    console.log(state.currentCommand);
-}, 1000);
+    // console.log(state.currentCommand);
+}, 500);
