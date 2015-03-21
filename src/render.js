@@ -48,7 +48,7 @@ var render = {
         n += 0.1;
         var lightPos = Math.sin(n / 3);
 
-        iso.setLightPosition(2 + lightPos, -1 * lightPos, 3);
+        iso.setLightPosition(2 + lightPos * 2, -2 * lightPos, 3);
 
         iso.canvas.clear();
 

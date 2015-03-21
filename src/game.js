@@ -122,6 +122,8 @@ function step(level) {
     return _cmdSuccess(newLevel);
 }
 
+// todo: at function end, return to where you were
+
 module.exports = {
     commands: commands,
     step: step
