@@ -89,7 +89,7 @@ var valid = {
         return allFnsValid;
     },
     command: function(cmd, fnNames) {
-        var commands = ['fwd', 'rotLeft', 'rotRight', 'jump', 'press'];
+        var commands = ['walk', 'rotLeft', 'rotRight', 'jump', 'press'];
         
         var validCommand = _.includes(commands, cmd);
         var validFnCall = _.includes(fnNames, cmd);
@@ -131,6 +131,12 @@ var valid = {
 
         if (!runningIsBool) {
             throw new Error('"running" must be a boolean');
+        }
+
+        var cmdSuccess = _.isBoolean(l.cmdSuccess);
+
+        if (!cmdSuccess) {
+            throw new Error('"cmdFailed" must be a boolean');
         }
 
         // todo: number of functions <= _maxNumFn

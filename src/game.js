@@ -27,13 +27,27 @@ function _getTargetCell(level) {
         targetCell.y = srcCell.y - 1;
     }
 
-    targetCell.h = _.findWhere(level.grid, { x: targetCell.x, y: targetCell.y }).h;
+    var schrodinCell;
+    schrodinCell = _.findWhere(level.grid, { x: targetCell.x, y: targetCell.y });
 
-    if (_.isUndefined(targetCell.h)) {
+    if (_.isUndefined(schrodinCell)) {
         return null; // cell not found
     } else {
+        targetCell.h = schrodinCell.h;
         return targetCell;
     }
+}
+
+function _cmdSuccess(level) {
+    var newLevel = _.cloneDeep(level);
+    newLevel.cmdSuccess = true;
+    return newLevel;
+}
+
+function _cmdFail(level) {
+    var newLevel = _.cloneDeep(level);
+    newLevel.cmdSuccess = false;
+    return newLevel;
 }
 
 var commands = {
@@ -42,11 +56,11 @@ var commands = {
         var targetCell = _getTargetCell(level);
 
         if (_.isNull(targetCell)) {
-            return false;
+            return _cmdFail(level);
         }
 
         if (targetCell.h !== srcCell.h) {
-            return false; // can't go when cells are not at the same height
+            return _cmdFail(level); // can't go when cells are not at the same height
         }
 
         var newLevel = _.cloneDeep(level);
@@ -54,18 +68,18 @@ var commands = {
         newLevel.robot.x = targetCell.x;
         newLevel.robot.y = targetCell.y;
 
-        return newLevel;
+        return _cmdSuccess(newLevel);
     },
     rotLeft: function rotLeft(level) {
         var newLevel = _.cloneDeep(level);
 
         newLevel.robot.rotation += 90;
 
-        if (newLevel.robot.rotation > 360) {
+        if (newLevel.robot.rotation >= 360) {
             newLevel.robot.rotation = 360 - newLevel.robot.rotation;
         }
 
-        return newLevel;
+        return _cmdSuccess(newLevel);
     },
     rotRight: function rotRight(level) {
         var newLevel = _.cloneDeep(level);
@@ -76,18 +90,18 @@ var commands = {
             newLevel.robot.rotation = 360 + newLevel.robot.rotation; // has negative value, so plus
         }
 
-        return newLevel;
+        return _cmdSuccess(newLevel);
     },
     jump: function jump(level) {
         var srcCell = _getSrcCell(level);
         var targetCell = _getTargetCell(level);
 
         if (_.isNull(targetCell)) {
-            return false;
+            return _cmdFail(level);
         }
 
         if (targetCell.h !== srcCell.h + 1) {
-            return false; // you can only jump one level
+            return _cmdFail(level); // you can only jump one level
         }
 
         // todo: jump one (or more) levels down
@@ -97,7 +111,7 @@ var commands = {
         newLevel.robot.x = targetCell.x;
         newLevel.robot.y = targetCell.y;
 
-        return newLevel;
+        return _cmdSuccess(newLevel);
     },
     press: function press(level) {
         var srcCell = _getSrcCell(level);
@@ -112,7 +126,7 @@ var commands = {
             newB.active = true;
         }
 
-        return newLevel;
+        return _cmdSuccess(newLevel);
     }
 };
 
@@ -125,7 +139,7 @@ function step(level) {
 
     if (_.isUndefined(cmdName)) {
         // We got to the end of a function / empty slot
-        return false;
+        return _cmdFail(level);
     }
 
     if (_.includes(_.keys(commands), cmdName)) {
@@ -139,7 +153,7 @@ function step(level) {
         newLevel.currentCommand.position = 0;
     }
 
-    return newLevel;
+    return _cmdSuccess(newLevel);
 }
 
 module.exports = {
