@@ -11,8 +11,9 @@ render.level(state, document.getElementById("canvas"));
 
 setInterval(function() {
     state = game.step(state);
-    render.level(state, document.getElementById("canvas"));
     valid.level(state);
-
-    // console.log(state.currentCommand);
 }, 500);
+
+setInterval(function() {
+    render.level(state, document.getElementById("canvas"));
+}, 30);

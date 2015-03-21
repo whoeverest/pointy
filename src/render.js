@@ -38,16 +38,25 @@ var Pointy = function(origin) {
 
 // todo: inject canvas el
 
+var n = 0;
+
 var render = {
     level: function(level, canvasEl) {
         var iso = new Isomer(canvasEl);
         var ctx = canvasEl.getContext('2d');
+
+        n += 0.1;
+        var lightPos = Math.sin(n / 3);
+
+        iso.setLightPosition(2 + lightPos, -1 * lightPos, 3);
 
         iso.canvas.clear();
 
         render.background(ctx);
         render.grid(level.grid, iso);
         render.pointy(level.robot, level.grid, iso);
+
+
     },
     background: function(ctx) {
         var gradient = ctx.createRadialGradient(400, 250, 350, 400, 250, 600);
@@ -98,8 +107,6 @@ var render = {
         var h = helpers._getHeight(grid, pointy.x, pointy.y);
         var positioned = new Pointy(Point.ORIGIN.translate(pointy.x, pointy.y, h));
         var rotPoint = new Point(pointy.x + 0.5, pointy.y + 0.5, 1);
-
-        console.log(h);
 
         var rotRadians;
         if (pointy.rotation === 0) {
