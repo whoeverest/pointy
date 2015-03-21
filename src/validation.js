@@ -89,7 +89,7 @@ var valid = {
         return allFnsValid;
     },
     command: function(cmd, fnNames) {
-        var commands = ['fwd', 'left', 'right', 'jump', 'press'];
+        var commands = ['fwd', 'rotLeft', 'rotRight', 'jump', 'press'];
         
         var validCommand = _.includes(commands, cmd);
         var validFnCall = _.includes(fnNames, cmd);
@@ -142,10 +142,10 @@ var valid = {
         // 0 <= position < function.length
         var fnNames = _.keys(functions);
 
-        valid.command(cc.name, fnNames);
+        valid.command(cc.fnName, fnNames);
 
-        if (_.includes(fnNames, cc.name)) {
-            if (!_.inRange(cc.position, 0, _.size(functions[cc.name]) + 1)) {
+        if (_.includes(fnNames, cc.fnName)) {
+            if (!_.inRange(cc.position, 0, _.size(functions[cc.fnName]) + 1)) {
                 throw new Error('Current command position out of range');
             }
         }
