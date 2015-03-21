@@ -72,6 +72,9 @@ var render = {
             return -(cell.x * 100 + cell.y);
         });
 
+        // todo: render pointy at the same time as the grid,
+        // because ordering issues otherwise (pointy behind cell)
+
         _.forEach(sorted, function(cell) {
             render.cell(cell, iso);
 
