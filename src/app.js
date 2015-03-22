@@ -1,4 +1,7 @@
 var _ = require('lodash');
+var $ = require('jquery');
+
+console.log($('body'));
 
 var valid = require('./validation.js');
 var levels = require('./levels.js');
@@ -6,7 +9,7 @@ var game = require('./game.js');
 var render = require('./render.js');
 
 var state = levels.third;
-render.level(state, document.getElementById("canvas"));
+render.level(state, document.getElementById('canvas'), $('#controls'));
 
 setInterval(function() {
     state = game.step(state);
@@ -14,5 +17,7 @@ setInterval(function() {
 }, 500);
 
 setInterval(function() {
-    render.level(state, document.getElementById("canvas"));
+    render.level(state, document.getElementById('canvas'));
 }, 30);
+
+render.functions(state.functions, $('#functions'));

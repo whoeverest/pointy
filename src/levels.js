@@ -64,8 +64,8 @@ var second = {
             commands: ['walk', 'walk', 'press', 'f1']
         },
         f1: {
-        	slots: 3,
-        	commands: ['rotLeft', 'rotLeft', 'main']
+            slots: 3,
+            commands: ['rotLeft', 'rotLeft', 'main']
         }
     },
     currentCommand: {
@@ -106,16 +106,16 @@ var third = {
         main: {
             slots: 12,
             commands: [
-            	'walk', 'walk', 'press', 'rotLeft',
-            	'walk', 'walk', 'press', 'rotLeft',
-            	'jump', 'jump', 'press', 'rotLeft',
-            	'walk', 'walk', 'rotLeft',
-            	'main'
+                'walk', 'walk', 'press', 'rotLeft',
+                'walk', 'walk', 'press', 'rotLeft',
+                'jump', 'jump', 'press', 'rotLeft',
+                'walk', 'walk', 'rotLeft',
+                'main'
             ]
         },
         f1: {
-        	slots: 12,
-        	commands: []
+            slots: 12,
+            commands: ['walk', 'rotLeft']
         }
     },
     currentCommand: {
@@ -127,7 +127,7 @@ var third = {
 };
 
 module.exports = {
-	first: first,
-	second: second,
-	third: third
+    first: first,
+    second: second,
+    third: third
 };
