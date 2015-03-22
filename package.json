@@ -23,6 +23,7 @@
   "homepage": "https://github.com/whoeverest/turtle-bot",
   "dependencies": {
     "isomer": "^0.2.4",
+    "jquery": "^2.1.3",
     "lodash": "^3.5.0"
   }
 }
