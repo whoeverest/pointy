@@ -19,5 +19,3 @@ setInterval(function() {
 setInterval(function() {
     render.level(state, document.getElementById('canvas'));
 }, 30);
-
-render.functions(state.functions, $('#functions'));
