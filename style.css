@@ -52,7 +52,7 @@ canvas {
 	background: #eee;
 	border: 1px solid silver;
 }
-.slot-disabled {
+.slot-empty {
 	background: #bbb;
 	border-left: 1px solid gray;
 	border-top: 1px solid gray;

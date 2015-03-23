@@ -10,6 +10,8 @@ var Shape  = Isomer.Shape;
 var Vector = Isomer.Vector;
 var Color  = Isomer.Color;
 
+// todo: render light from top-left
+
 var Pointy = function(origin) {
     // dx = (typeof dx === 'number') ? dx : 1;
     // dy = (typeof dy === 'number') ? dy : 1;

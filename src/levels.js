@@ -104,7 +104,7 @@ var third = {
     },
     functions: {
         main: {
-            slots: 12,
+            slots: 16,
             commands: [
                 'walk', 'walk', 'press', 'rotLeft',
                 'walk', 'walk', 'press', 'rotLeft',
@@ -114,7 +114,7 @@ var third = {
             ]
         },
         f1: {
-            slots: 12,
+            slots: 8,
             commands: ['walk', 'rotLeft']
         }
     },

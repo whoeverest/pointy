@@ -76,17 +76,23 @@ var valid = {
         return true;
     },
     fn: function(f, fnNames) {
-        var sizeOk = _.inRange(f.slots, 1, 13);
+        var sizeOk = _.inRange(f.slots, 1, 17); // todo: inject maxFnNumber
 
         if (!sizeOk) {
             throw new Error('Invalid number of slots in function');
         }
 
-        var allFnsValid = _.all(_.map(f.commands, function(c) {
+        var numCmdsValid = _.size(f.commands) <= f.slots;
+
+        if (!numCmdsValid) {
+            throw new Error('More commands than slots');
+        }
+
+        var allCmdsValid = _.all(_.map(f.commands, function(c) {
             return valid.command(c, fnNames);
         }));
 
-        return allFnsValid;
+        return allCmdsValid;
     },
     command: function(cmd, fnNames) {
         var commands = ['walk', 'rotLeft', 'rotRight', 'jump', 'press'];

@@ -122,9 +122,38 @@ function step(level) {
     return _cmdSuccess(newLevel);
 }
 
+function addCmd(level, cmdName, fnName) {
+    // var selectedFn = level.functions[fnName];
+    // todo: check if running
+
+    var newLevel = _.cloneDeep(level);
+    newLevel.functions[fnName].commands.push(cmdName);
+
+    return newLevel;
+}
+
+function removeCmd(level, cmdPos, fnName) {
+    var selectedFn = level.functions[fnName];
+
+    console.log(fnName);
+    console.log(level.functions);
+    console.log(selectedFn);
+
+    if (!_.inRange(cmdPos, 0, _.size(selectedFn.commands))) {
+        console.error('Invalid command index');
+    }
+
+    var newLevel = _.cloneDeep(level);
+    newLevel.functions[fnName].commands.splice(cmdPos, 1); // todo: lodashy way to remove el?
+
+    return newLevel;
+}
+
 // todo: at function end, return to where you were
 
 module.exports = {
     commands: commands,
-    step: step
+    step: step,
+    addCmd: addCmd,
+    removeCmd: removeCmd
 };

@@ -6,52 +6,8 @@
 <body>
     <div id="container">
         <div style="background: white; width: 800; height: 600;"><canvas id="canvas" width="800" height="600"></canvas></div>
-        <div id="controls">
-            <div class="control" id="forward" draggable="true" ondragstart="drag(event)">Fwd</div>
-            <div class="control" id="rot-left" draggable="true" ondragstart="drag(event)">Left</div>
-            <div class="control" id="rot-right" draggable="true" ondragstart="drag(event)">Right</div>
-            <div class="control" id="jump" draggable="true" ondragstart="drag(event)">Jump</div>
-            <div class="control" id="press" draggable="true" ondragstart="drag(event)">Press</div>
-            <div class="control" id="call-f1" draggable="true" ondragstart="drag(event)">F1</div>
-        </div>
-        <div id="functions">
-<!--             <div class="function" id="main">
-                <div class="function-name">Main</div>
-                <div class="slots">
-                    <div class="slot" data-pos="00" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="01" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="02" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="03" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-                    <div class="slot" data-pos="10" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="11" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="12" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="13" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-                    <div class="slot" data-pos="20" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="21" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="22" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="slot" data-pos="23" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-            </div> -->
-        </div>
         <button id="run-stop">Run!</button>
     </div>
     <script src="bundle.js"></script>
-    <script type="text/javascript">
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            console.log('drop', data);
-        }
-    </script>
 </body>
 </html>
