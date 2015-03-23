@@ -11,19 +11,21 @@ var state = levels.third;
 render.level(state, document.getElementById('canvas'));
 
 $('#container').append(gui.template.controls([
-    'forward', 'rotLeft', 'rotRight', 'jump', 'press'
+    'walk', 'rotLeft', 'rotRight', 'jump', 'press', 'main', 'f1'
 ]));
 
 function renderFunctions() {
+    console.log('rend fu');
+
     $('#container #functions').remove();
     $('#container').append(gui.template.functions(state.functions));
 
-    $('#f1 .slot-empty').on('dragover', function(ev) {
+    $('#functions .slot-empty').on('dragover', function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
     });
 
-    $('#f1 .slot-empty').on('dragenter', function(ev) {
+    $('#functions .slot-empty').on('dragenter', function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
     });
@@ -50,17 +52,39 @@ function renderFunctions() {
     });
 }
 
+function renderButton() {
+    var $button = $('<button/>').attr('id', 'run-stop');
+
+    $('#container #run-stop').remove();
+    $('#container').append($button);
+
+    if (state.running) {
+        $button.removeClass('stopped').addClass('running').text('Stop!');
+    } else {
+        $button.removeClass('running').addClass('stopped').text('Run!');
+    }
+
+    $('#run-stop').click(function() {
+        if (state.running) {
+            state = game.stop(state);
+        } else {
+            state = game.run(state);
+        }
+        renderButton();
+    });
+}
+
 renderFunctions();
 
 setInterval(function() {
-    state = game.step(state);
+    if (state.running) {
+        var newLevel = game.step(state);
+        valid.level(state);
+        state = newLevel; // if it throws it won't be reached
+    }
+    renderButton();
     render.level(state, document.getElementById('canvas'));
-    valid.level(state);
-}, 2000);
-
-
-// drag'n'drop to add command
-
+}, 500);
 
 $('#controls .control').on('dragstart', function(ev) {
     ev.originalEvent.dataTransfer.setData("cmdName", ev.target.id);

@@ -67,3 +67,9 @@ canvas {
 	color: white;
 	font-size: 24px;
 }
+#run-stop.running {
+	background: red;
+}
+#run-stop.stopped {
+	background: green;
+}

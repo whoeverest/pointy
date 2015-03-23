@@ -105,7 +105,28 @@ function step(level) {
 
     if (_.isUndefined(cmdName)) {
         // We got to the end of a function / empty slot
-        return _cmdFail(level);
+        newLevel = _.cloneDeep(level);
+        newLevel.running = false;
+        
+        newLevel.currentCommand = {
+            fnName: 'main',
+            position: 0
+        };
+
+        newLevel.robot.x = newLevel.robot.startingPosition.x;
+        newLevel.robot.y = newLevel.robot.startingPosition.y;
+        newLevel.robot.rotation = newLevel.robot.startingPosition.rotation;
+
+        newLevel.grid = _.map(newLevel.grid, function(cell) {
+            if (cell.type === 'button') {
+                cell.active = false;
+            }
+            return cell;
+        });
+
+        console.log(newLevel);
+        
+        return newLevel;
     }
 
     if (_.includes(_.keys(commands), cmdName)) {
@@ -123,8 +144,9 @@ function step(level) {
 }
 
 function addCmd(level, cmdName, fnName) {
-    // var selectedFn = level.functions[fnName];
-    // todo: check if running
+    if (level.running) {
+        throw new Error("Can't add command while game is running");
+    }
 
     var newLevel = _.cloneDeep(level);
     newLevel.functions[fnName].commands.push(cmdName);
@@ -135,17 +157,38 @@ function addCmd(level, cmdName, fnName) {
 function removeCmd(level, cmdPos, fnName) {
     var selectedFn = level.functions[fnName];
 
-    console.log(fnName);
-    console.log(level.functions);
-    console.log(selectedFn);
+    if (level.running) {
+        throw new Error("Can't add command while game is running");
+    }
 
     if (!_.inRange(cmdPos, 0, _.size(selectedFn.commands))) {
-        console.error('Invalid command index');
+        throw new Error('Invalid command index');
     }
 
     var newLevel = _.cloneDeep(level);
     newLevel.functions[fnName].commands.splice(cmdPos, 1); // todo: lodashy way to remove el?
 
+    return newLevel;
+}
+
+function run(level) {
+    if (level.running) {
+        throw new Error('Already running');
+    }
+
+    var newLevel = _.cloneDeep(level);
+    newLevel.running = true;
+
+    return newLevel;
+}
+
+function stop(level) {
+    if (!level.running) {
+        throw new Error('Already stopped');
+    }
+
+    var newLevel = _.cloneDeep(level);
+    newLevel.running = false;
     return newLevel;
 }
 
@@ -155,5 +198,7 @@ module.exports = {
     commands: commands,
     step: step,
     addCmd: addCmd,
-    removeCmd: removeCmd
+    removeCmd: removeCmd,
+    run: run,
+    stop: stop
 };

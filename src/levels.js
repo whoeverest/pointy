@@ -20,7 +20,12 @@ var first = {
         // 90 == up
         // 180 == left
         // 270 == down
-        rotation: 0
+        rotation: 0,
+        startingPosition: {
+            x: 0,
+            y: 0,
+            rotation: 0
+        }
     },
     functions: {
         main: {
@@ -56,7 +61,12 @@ var second = {
         // 90 == up
         // 180 == left
         // 270 == down
-        rotation: 0
+        rotation: 0,
+        startingPosition: {
+            x: 0,
+            y: 0,
+            rotation: 0
+        }
     },
     functions: {
         main: {
@@ -100,22 +110,21 @@ var third = {
         // 90 == up
         // 180 == left
         // 270 == down
-        rotation: 0
+        rotation: 0,
+        startingPosition: {
+            x: 0,
+            y: 0,
+            rotation: 0
+        }  // todo: duplication of data, fix
     },
     functions: {
         main: {
             slots: 16,
-            commands: [
-                'walk', 'walk', 'press', 'rotLeft',
-                'walk', 'walk', 'press', 'rotLeft',
-                'jump', 'jump', 'press', 'rotLeft',
-                'walk', 'walk', 'rotLeft',
-                'main'
-            ]
+            commands: ['walk', 'walk', 'press']
         },
         f1: {
             slots: 8,
-            commands: ['walk', 'rotLeft']
+            commands: []
         }
     },
     currentCommand: {

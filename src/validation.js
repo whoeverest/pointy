@@ -73,6 +73,10 @@ var valid = {
             throw new Error('Invalid rotation value');
         }
 
+        if (!r.startingPosition) {
+            throw new Error('Robot should have a starting position');
+        }
+
         return true;
     },
     fn: function(f, fnNames) {
@@ -101,7 +105,7 @@ var valid = {
         var validFnCall = _.includes(fnNames, cmd);
 
         if (!validCommand && !validFnCall) {
-            throw new Error('Invalid command name');
+            throw new Error('Invalid command name ' + cmd);
         }
 
         return true;
@@ -144,6 +148,8 @@ var valid = {
         if (!cmdSuccess) {
             throw new Error('"cmdSuccess" must be a boolean');
         }
+
+        if (!_.contains())
 
         // todo: number of functions <= _maxNumFn
 
